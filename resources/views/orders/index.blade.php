@@ -1,217 +1,259 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-9">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="text-light fw-bold" style="float: left;">Order Products</h4>
-                    <button class="btn btn-dark float-end" data-bs-toggle="modal" data-bs-target="#addproduct">
-                        <i class="fa fa-plus"></i> Add New Products
-                    </button>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Right Sidebar: Total & Search -->
+            <div class="col-md-3 order-1 order-md-2">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Total <b class="total">0.00</b></h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="panel">
+                            <div class="row">
+                                <table class="table table-striped">
+                                    <tr>
+                                        <td>
+                                            <label for="">Customer Name</label>
+
+                                            <input type="text"name="customer_name" id="" class="form-control">
+
+
+                                        </td>
+                                        <td>
+                                            <label for="">Customer Phone</label>
+
+                                            <input type="number" name="customer_phone" id="" class="form-control">
+
+
+                                        </td>
+                                    </tr>
+                                </table>
+                                <td>Payment Method<br>
+                                    <span class="radio-item">
+                                        <input type="radio" name="payment_method" id="payment_method"
+                                            class="true"value="Cash" checked="checked"> <label for="payment_method"><i
+                                                class="fa fa-money-bill text-success">Cash</i></label>
+                                    </span>
+                                    <span class="radio-item">
+                                        <input type="radio" name="payment_method" id="payment_method"
+                                            class="true"value="bank transfer" checked="checked"> <label
+                                            for="payment_method"><i class="fa fa-university text-danger">Bank
+                                                Transfer</i></label>
+                                    </span>
+                                    <span class="radio-item">
+                                        <input type="radio" name="payment_method" id="payment_method"
+                                            class="true"value="credit card" checked="checked"> <label
+                                            for="payment_method"><i class="fa fa-credit-card text-info">Credit
+                                                Card</i></label>
+                                    </span>
+
+                                </td><br>
+                                <td> Payment <input type="number" name="paid_amount" id="paid_amount" class="form-control">
+                                </td>
+                                <td> Returning Change <input type="number" readonly name="balance" id="balance" class="form-control">
+                                </td>
+
+
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <table class="table table-bordered">
-                        
-                        <thead class="table-light">
-                            <tr>
-                              
-                                <th></th>
-                                <th>Product Name</th>
-                                <th>Qty</th>  
-                                <th>Price</th>
-                                <th>Dis (%)</th>
-                                <th>Total</th>
-                                <th><a href="#" class="btn btn-sm btn-success add_more rounded-circle"><i class="fa fa-plus-circle"></i> </a></th>
-                    
-                            </tr>
-                        </thead>
-         <tbody class="addMoreProduct">
-            <tr>
-                <td>1</td>
-                <td>
-                    <select name="product_id[]" id="product_id" class="form-select product_id" >
-                         @foreach ($products as $product)
-                         <option data-price="{{ $product->price }}"
-                            value="{{ $product->id }}">{{ $product->product_name }}
-                        </option>
-                        @endforeach
-                    </select>  
-                </td>
-                <td>
-                   <input type="number" name="quantity[]" id="quantity" class="form-control quantity"> 
-                </td>
-                <td>
-                    <input type="number" name="price[]" id="price" class="form-control price"> 
-                 </td>
-                 <td>
-                    <input type="number" name="discount[]" id="discount" class="form-control discount"> 
-                 </td>
-                 <td>
-                    <input type="number" name="total_amount[]" id="total_amount" class="form-control total_amount"> 
-                 </td>
-                 <td><a href="#" class="btn btn-sm btn-danger delete rounded-circle"><i class="fa fa-times"></i> </a></td>
-            </tr>
-      
-        </tbody>
-                        
-                        
-                    </table>
+            </div>
+
+            <!-- Product Table -->
+            <div class="col-md-9 order-2 order-md-1">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="text-light fw-bold" style="float: left;">Order Products</h4>
+
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Product Name</th>
+                                    <th>Qty</th>
+                                    <th>Price</th>
+                                    <th>Dis (%)</th>
+                                    <th>Total</th>
+                                    <th>
+                                        <a href="#" class="btn btn-sm btn-success add_more rounded-circle">
+                                            <i class="fa fa-plus-circle"></i>
+                                        </a>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="addMoreProduct">
+                                <tr>
+                                    <td>1</td>
+                                    <td>
+                                        <select name="product_id[]" id="product_id" class="form-select product_id">
+                                            <option value="" selected disabled>Select Product</option>
+                                            @foreach ($products as $product)
+                                                <option data-price="{{ $product->price }}" value="{{ $product->id }}">
+                                                    {{ $product->product_name }}</option>
+                                            @endforeach
+                                        </select>
+
+                                    </td>
+                                    <td><input type="number" name="quantity[]" class="form-control quantity"></td>
+                                    <td><input type="number" name="price[]" class="form-control price" readonly></td>
+                                    <td><input type="number" name="discount[]" class="form-control discount"></td>
+                                    <td><input type="number" name="total_amount[]" class="form-control total_amount"
+                                            readonly></td>
+                                    <td>
+                                        <a href="#" class="btn btn-sm btn-danger delete rounded-circle">
+                                            <i class="fa fa-times"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Right Sidebar: Search product -->
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-header">
-                    <h4 >Total <b class="total">0.00</b></h4>
+    <!-- Modal: Add product -->
+    <div class="modal right fade" id="addproduct" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="staticBackdropLabel">Add product</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="card-body">
-                    <input type="text" class="form-control" placeholder="Search product...">
+                <div class="modal-body">
+                    <form action="{{ route('products.store') }}" method="POST">
+                        @csrf
+                        <div class="form-group mb-2">
+                            <label>Product Name</label>
+                            <input type="text" name="product_name" class="form-control">
+                        </div>
+                        <div class="form-group mb-2">
+                            <label>Brand</label>
+                            <input type="text" name="brand" class="form-control">
+                        </div>
+                        <div class="form-group mb-2">
+                            <label>Price</label>
+                            <input type="number" name="price" class="form-control">
+                        </div>
+                        <div class="form-group mb-2">
+                            <label>Quantity</label>
+                            <input type="number" name="quantity" class="form-control">
+                        </div>
+                        <div class="form-group mb-2">
+                            <label>Alert Stock</label>
+                            <input type="number" name="alert_stock" class="form-control">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Description</label>
+                            <textarea name="description" class="form-control" rows="2"></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary w-100">Save Product</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-<!-- Modal: Add product -->
-<div class="modal right fade" id="addproduct" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="staticBackdropLabel">Add product</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-
-                <form action="{{ route('products.store') }}" method="POST">
-                    @csrf
-                    
-                    <div class="form-group">
-                        <label for="">Product Name</label>
-                        <input type="text" name="product_name" id="" class="form-control" >
-                    </div>
-
-                    <div class="form-group">
-                        <label for="">Brand</label>
-                        <input type="text" name="brand" id="" class="form-control" >
-                    </div>
-
-                    <div class="form-group">
-                        <label for="">Price</label>
-                        <input type="number" name="price" id="" class="form-control" >
-                    </div>
-
-                    <div class="form-group">
-                        <label for="">Quantity</label>
-                        <input type="number" name="quantity" id="" class="form-control" >
-                    </div>
-
-                    <div class="form-group">
-                        <label for=""> Alert Stock</label>
-                        <input type="number" name="alert_stock" id="" class="form-control" >
-                    </div>
-                    
-                    
-                    <div class="form-group">
-                        <label for="">Description</label>
-                        <textarea name="description" id="" cols="30" rows="2" class="form-control" >
-                        </textarea>
-                    </div>
-                  
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary btn-block">Save Product</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
 @endsection
 
 @section('script')
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function() {
-        console.log("jQuery Loaded & Script Running ✅");
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            console.log("Script Loaded ✅");
 
-        // Get the original dropdown for cloning
-        var productDropdown = $('.product_id').first().clone();
-        productDropdown.removeAttr('id'); // Remove ID to prevent duplication
-        productDropdown.find('option:selected').removeAttr('selected'); // Reset selection
+            // Clone dropdown for later use
+            let productDropdown = $('.product_id').first().clone();
+            productDropdown.removeAttr('id');
+            productDropdown.find('option:selected').removeAttr('selected');
 
-        // Add more rows dynamically
-        $(document).on('click', '.add_more', function(e) {
-            e.preventDefault(); // Prevent default action
+            // Add row
+            // Add row
+            $(document).on('click', '.add_more', function(e) {
+                e.preventDefault();
+                let rowCount = $('.addMoreProduct tr').length + 1;
 
-            var numberofrow = $('.addMoreProduct tr').length + 1; // Get current row count
+                // Clone and reset the dropdown
+                let dropdown = $('.product_id').first().clone();
+                dropdown.removeAttr('id');
+                dropdown.val(''); // <-- ✅ This ensures default "Select Product" is selected
 
-            var tr = `
-                <tr>
-                    <td>${numberofrow}</td>
-                    <td>${productDropdown.prop('outerHTML')}</td>
-                    <td><input type="number" name="quantity[]" class="form-control quantity " ></td>
-                    <td><input type="number" name="price[]" class="form-control price "></td>
-                    <td><input type="number" name="discount[]" class="form-control discount "></td>
-                    <td><input type="number" name="total_amount[]" class="form-control total_amount"></td>
-                    <td><a href="#" class="btn btn-sm btn-danger delete rounded-circle"><i class="fa fa-times-circle"></i></a></td>
-                </tr>`;
-
-            $('.addMoreProduct').append(tr); // Append new row
-        });
-    });
-
-        // Remove row
-        // $(document).on('click', '.delete', function(e) {
-        //     e.preventDefault();
-        //     $(this).closest('tr').remove();
-        // });
-        $('.addMoreProduct').delegate('.delete','click',function(){
-            $(this).parent().parent().remove();
-        })
-
-        // Auto Calculate Total Price
-        // $(document).on('input', '.quantity, .price, .discount', function() {
-        //     var row = $(this).closest('tr');
-        //     var qty = parseFloat(row.find('.quantity').val()) || 0;
-        //     var price = parseFloat(row.find('.price').val()) || 0;
-        //     var discount = parseFloat(row.find('.discount').val()) || 0;
-
-        //     var total = (qty * price) - ((qty * price * discount) / 100);
-        //     row.find('.total').val(total.toFixed(2));
-        //});
-
-        function TotalAmount(){
-            var total=0;
-            $('.total_amount').each(function(i,e){
-                var amount=$(this).val()-0;
-                total+=amount;
+                let tr = `
+        <tr>
+            <td>${rowCount}</td>
+            <td>${dropdown.prop('outerHTML')}</td>
+            <td><input type="number" name="quantity[]" class="form-control quantity"></td>
+            <td><input type="number" name="price[]" class="form-control price" readonly></td>
+            <td><input type="number" name="discount[]" class="form-control discount"></td>
+            <td><input type="number" name="total_amount[]" class="form-control total_amount" readonly></td>
+            <td>
+                <a href="#" class="btn btn-sm btn-danger delete rounded-circle">
+                    <i class="fa fa-times-circle"></i>
+                </a>
+            </td>
+        </tr>`;
+                $('.addMoreProduct').append(tr);
             });
 
-            $('.total_amount').html(total);
 
+            // Remove row
+            $(document).on('click', '.delete', function(e) {
+                e.preventDefault();
+                $(this).closest('tr').remove();
+                calculateGrandTotal();
+            });
 
-        }
+            // Product change → update price and recalculate total
+            $(document).on('change', '.product_id', function() {
+                let tr = $(this).closest('tr');
+                let price = $(this).find('option:selected').data('price') || 0;
+                tr.find('.price').val(price);
+                calculateRowTotal(tr);
+            });
 
-        $('.addMoreProduct').delegate('.product_id', 'change', function () {
-    var tr = $(this).closest('tr');
-    var price = $(this).find('option:selected').attr('data-price');
+            // Qty or discount change → update total
+            $(document).on('input', '.quantity, .discount', function() {
+                let tr = $(this).closest('tr');
+                calculateRowTotal(tr);
+            });
 
-    tr.find('.price').val(price); // Set price input based on selected product
+            // Press Enter to add row
+            $(document).on('keypress', 'input', function(e) {
+                if (e.which === 13) {
+                    e.preventDefault();
+                    $('.add_more').click();
+                }
+            });
 
-    var qty = parseFloat(tr.find('.quantity').val()) || 0;
-    var disc = parseFloat(tr.find('.discount').val()) || 0;
-    price = parseFloat(price) || 0;
+            function calculateRowTotal(tr) {
+                let price = parseFloat(tr.find('.price').val()) || 0;
+                let qty = parseFloat(tr.find('.quantity').val()) || 0;
+                let disc = parseFloat(tr.find('.discount').val()) || 0;
 
-    var total_amount = (qty * price) - ((qty * price * disc) / 100);
-    tr.find('.total_amount').val(total_amount.toFixed(2));
-    TotalAmount();
-});
+                let subtotal = qty * price;
+                let discount = (subtotal * disc) / 100;
+                let total = subtotal - discount;
 
+                tr.find('.total_amount').val(total.toFixed(2));
+                calculateGrandTotal();
+            }
 
-    
-</script>
+            function calculateGrandTotal() {
+                let total = 0;
+                $('.total_amount').each(function() {
+                    total += parseFloat($(this).val()) || 0;
+                });
+                $('.total').text(total.toFixed(2));
+            }
+        });
+    </script>
 @endsection
